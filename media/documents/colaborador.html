@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block css %}{% endblock %}
+{% block T1 %}Dados do Colaborador{% endblock %}
+{% block T2 %}Visualize dados para conferência{% endblock %}
+{% block script %}{% endblock %}
+{% block content %}
+<div class="row">
+        <div class="col-md-12" style="text-align: right">
+            <input class="btn btn-primary" type=button value="VOLTAR" onClick="javascript:history.go(-1);">
+        </div>
+    </div>
+<main role="main">
+        <div class="container">
+            <h4 class="modal-title" id="myModalLabel">Nome : {{func.nome_funcionario|title}}</h4><br>
+            <p class="lead text-muted"><strong>Empresa &nbsp: &nbsp </strong>
+            &nbsp{% for nome in empw %}
+                {% if nome.id == func.empresa_id %}
+                {{nome.nome_empresa}}
+                {% endif %}
+                {% endfor %}
+            </p>
+          <p class="lead text-muted"><strong>Rg &nbsp: &nbsp </strong>&nbsp{{func.rg}}</p>
+          <p class="lead text-muted"><strong>Cpf&nbsp&nbsp&nbsp&nbsp: &nbsp </strong>&nbsp{{func.cpf}}</p>
+          <p class="lead text-muted"><strong>Função&nbsp&nbsp&nbsp&nbsp: &nbsp </strong>&nbsp{{func.funcao}}</p>
+          <p class="lead text-muted"><strong>Data da Integração &nbsp: &nbsp </strong>&nbsp
+            {% if func.data_int %}
+            {{func.data_int}}
+            {% else %}
+            DATA NÃO DEFINIDA
+            {% endif %}
+        </p>
+
+        </div>
+
+        
+
+       
+
+{% endblock %}
+
