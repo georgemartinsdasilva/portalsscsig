@@ -1,0 +1,12 @@
+{% extends "base.tpl" %}
+
+{% block subject %}
+{{ COMPANY_NAME }} {% block subject_content %}{% endblock %}
+{% endblock %}
+
+{% block html %}
+  <img src="{{ COMPANY_LOGO_URL }}" />
+  {% block body_content %}
+    {% include 'base.html' %}
+  {% endblock %}
+{% endblock %}

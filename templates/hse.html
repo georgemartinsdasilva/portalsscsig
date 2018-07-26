@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li>Hse</li>            
+{% endblock %}
+{% load staticfiles %}
+{% block css %}{% endblock %}
+{% block T1 %}HSE{% endblock %}
+{% block T2 %}Serviços, Segurança e Documentação{% endblock %}
+{% block script %}{% endblock %}
+{% block content %}
+{% if a %}
+123
+{% endif %}
+<div class="row">
+    <div class="col-md-4">
+      <a href="/meus_chamados"><div class="card mb-4 box-shadow">
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=1b446d&fg=eceeef&text=Chamados" alt="Módulo Hse">
+        <div class="card-body">
+          <p class="card-text" style="text-align: justify">Acesse para a abertura de um novo chamado. Enviar uma solicitação de cadastro para uma nova empresa terceira. Lista todos os seus chamados</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text" style="color: green">Running</small>
+          </div>
+        </div>
+      </div>
+    </div></a>
+    <div class="col-md-4">
+      <a href="/gestao"><div class="card mb-4 box-shadow">
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=1b446d&fg=eceeef&text=Gestão" alt="Módulo Hse">
+        <div class="card-body">
+          <p class="card-text" style="text-align: justify">Exclusivo  para os técnicos de segurança do Hse. Exclusivo  para os técnicos de segurança do Hse. Exclusivo  para os técnicos de segurança do Hse. </p>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text" style="color: green">Running</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <a href="/portaria"><div class="card mb-4 box-shadow">
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=1b446d&fg=eceeef&text=Portaria" alt="Módulo Hse">
+        <div class="card-body">
+          <p class="card-text" style="text-align: justify">Controle de Liberação - Integração. Controle de Liberação - Integração. Controle de Liberação - Integração. Controle de Liberação - Integração.</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text" style="color: green">Running</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

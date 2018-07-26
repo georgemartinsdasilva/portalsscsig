@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/hse">Hse</a></li>
+<li><a href="/meus_chamados">Chamados</a></li>
+<li><a href="/novo_chamado_hse">Novo Chamado</a></li>
+<li>Solicita Cadastro</li>            
+{% endblock %}
+{% load staticfiles %}
+{% block css %}{% endblock %}
+{% block T1 %}Solicitação de Cadastro {% endblock %}
+{% block T2 %}Solicitação para cadastramento de nova empresa{% endblock %}
+{% block script %}{% endblock %}
+{% block content %}
+
+
+<div class="row">
+    <div class="col-md-6">
+    <form method="POST">
+      {% csrf_token %}
+      <small style="text-align: left">Entre com o email do fornecedor que deseja solicitar cadastro NÃO ERRE !</small><br>
+      <input name="username" class="form-control" type="email" id="id_username" required /><br/><br/>
+      <input type="hidden" class="form-control" name="password1" value="1234qwer">
+      <input type="hidden" class="form-control" name="password2" value="1234qwer">
+      <input type="hidden" class="form-control" name="first" value="first">
+      <small>Contato na Empresa Solicitada</small><br/>
+      <input type="text" class="form-control" name="Contato"><br/><br/>
+      <small>Escreva Suas observações referentes a esta solicitação</small><br/>
+      <textarea rows="7" cols="40" name="Obs" class="form-control"></textarea><br/><br/><br/><br/>
+      <button type="submit" class="btn btn-primary">Solicitar</button>
+    </form>
+  </div>
+
+  {% if form.errors %}
+<div class="col-md-6" style="text-align: center" id="div1" >
+    
+    <img src="{% static 'SIG_1.png' %}" width="150" height="100" alt="Book" id="book" >
+    <p style="color:red;">Algo saiu errado ! Por favor, tente novamente.</p>
+    
+    <span class="helptext">Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.</span>
+    <span class="helptext"<ul><li>Sua senha não pode ser tão parecida com suas outras informações pessoais.</li><li>Sua senha precisa conter pelo menos 8 caracteres.</li><li>Sua senha não pode ser uma senha habitualmente utilizada.</li><li>Sua senha não pode ser inteiramente numérica.</li></ul></span>
+    <span class="helptext">Certifique-se de que as senhas informadas são identicas.</span><br>
+    <span class="helptext">Certifique-se de que não há outro usuário com o mesmo nome.</span>
+
+    
+</div>
+{% else %}
+<div class="col-md-6" style="text-align: center" id="div1" >
+    <br><br>
+    <img src="{% static 'SIG_1.png' %}" width="300 " height="200" alt="Book" id="book" >
+    
+
+    
+</div>
+{% endif %}
+</div>
+  </div>
+      </div>
+
+
+
+
+
+      
+
+{% endblock %}

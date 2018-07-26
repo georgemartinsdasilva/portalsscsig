@@ -1,0 +1,112 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <title>Shared Service Web Center</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    {% block css %}{% endblock %}
+    <!-- Custom styles for this template -->
+    <link href="{% static 'album.css' %}" rel="stylesheet">
+    <style>
+        ul.breadcrumb1 {
+            padding: 1px 1px;
+            list-style: none;
+        
+        }
+        ul.breadcrumb1 li {
+            display: inline;
+            font-size: 18px;
+        }
+        ul.breadcrumb1 li+li:before {
+            padding: 2px;
+            color: black;
+            content: "/\00a0";
+        }
+        ul.breadcrumb1 li a {
+            color: #0275d8;
+            text-decoration: none;
+        }
+        ul.breadcrumb1 li a:hover {
+            color: #01447e;
+            text-decoration: underline;
+        }
+        </style>
+  </head>
+  <body>
+    <header>
+      <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">AutoCode<small>   Eng. de Gestão</small></h4>
+              <p class="text-white">Aplicação destinada a Automatizar processos da Sig Combibloc</p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Diego Nascimento</h4>
+              <ul class="list-unstyled">
+                <li><a href="/admin" class="text-white">Administração</a></li>
+                <li><a href="/perfil" class="text-white">Meu Perfil</a></li>
+                <li><a href="/logout" class="text-white">LogOut</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+          <a href="/" class="navbar-brand d-flex align-items-center">
+            <img src="{% static 'SIG_1.png' %}" width="40" style="padding-right: 10px">
+            <strong>PortalSscSig</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main role="main">
+        <div class="container">
+          <h1 class="jumbotron-heading">{% block T1 %}{% endblock %}</h1>
+          <p class="lead text-muted">{% block T2 %}{% endblock %}</p>
+        </div>
+
+        <div class="container">
+            <div class="col-md-12" style="text-align: center">
+                <ul class="breadcrumb1">
+                  {% block nav %} {% endblock %}
+                    
+                   
+                  </ul>
+            </div>
+            <hr /> 
+{% block content %}
+
+{% endblock %}  
+</div>
+    </main>
+     <footer class="text-muted">
+      <div class="container">
+        <p class="float-right">
+          <a href="#">Voltar ao topo</a>
+        </p>
+        <p>Dúvidas relacionadas aos processos e aos fluxos associados acesse a documentação abaixo</p>
+        <p>Documentação Shared Service Web Center : <a href="../../">Documentação</a> Acesse nosso site <a href="../../getting-started/">AutoCode</a>.</p>
+      </div>
+    </footer>
+ 
+
+    <script>window.jQuery || document.write('<script src="{% static 'assets/js/vendor/jquery-slim.min.js' %}"><\/script>')</script>
+    <script src="{% static 'assets/js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/holder.min.js' %}"></script>
+   
+    
+    {% block script %}{% endblock %}
+  </body>
+</html>

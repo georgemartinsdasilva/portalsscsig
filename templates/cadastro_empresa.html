@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load expr %}
+{% load define_action %}
+{% block css %}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">{% endblock %}
+{% block T1 %}Gestão Dados Cadastrais{% endblock %}
+{% block T2 %}Cadastro, Responsáveis e Documentação{% endblock %}
+{% block script %}
+<script>
+    $('#my_modal').on('show.bs.modal', function(e) {
+      var bookId = $(e.relatedTarget).data('book-id');
+      var txt = $(e.relatedTarget).data('txt-id');
+      $(e.currentTarget).find('input[name="nome_documento"]').val(bookId);
+      document.getElementById("demo").innerHTML = txt;
+  });
+  </script>
+ 
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+      <p class="lead text-muted">Dados Cadastrais da  Empresa</p>
+      <form method="POST" class="post-form">{% csrf_token %}
+          Razão :<br>
+          <input class="form-control" type="txt" name="nome_empresa" value="{{nome}}"/><br>
+          Cnpj:<br>
+          <input class="form-control" type="txt" name="cnpj" value="{{cnpj}}"/><br>
+          Telefone:<br>
+          <input class="form-control" type="txt" name="telefone" value="{{telefone}}"/><br>
+          Email:<br>
+          <input class="form-control" type="txt" name="email" value="{{email}}"/>
+          <br>
+          <button type="submit" class="save btn btn-primary">Submeter Informações</button>
+      </form>
+
+  </div>
+
+
+<dic class="col-md-6">
+    <p class="lead text-muted">Cadastro de Novo Responsável</p>
+    <form action="/cad_resp_view" method="POST" class="post-form">{% csrf_token %}
+        None :<br>
+        <input class="form-control" type="txt" name="nome_resp" value=""/><br>
+
+        <input class="form-control" type="hidden" name="empresa_resp" value="{{empr_aux}}"/>
+        Função:<br>
+        <input class="form-control" type="txt" name="funcao_resp" value=""/><br>
+        Telefone:<br>
+        <input class="form-control" type="txt" name="telefone_resp" value=""/><br>
+        Email:<br>
+        <input class="form-control" type="txt" name="email_resp" value=""/>
+        <br>
+        <button type="submit" class="save btn btn-primary">Cadastrar Responsável</button>
+    </form>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+
+<div class="col-md-8" style="text-align: center">
+    <p class="lead text-muted">Documentação Específica Empresa</p>
+    <table class="table table-hover">
+     <tr>
+       <th>Documento Necessário</th>
+       <th>Enviado (x) vezes</th>
+     </tr>
+     {% for k, v in dict1.items %}
+     <tr>
+       <td data-toggle="tooltip" data-placement="left" title="{{el.toolTip}}&#013;&#013;&#013;&#013;mais qqr coisa"
+       ><a href="#my_modal" data-toggle="modal" data-book-id="{{k}}" data-txt-id="{{k}}">{{k}}</td></a>
+       <td>
+           {% if v  %}
+               {% for item in v %}
+                  <a href="/media/{{item}}"  target="_blank"  ><i class="fa fa-arrow-up" style="font-size:20px;color:green"></i></a>
+               {% endfor %}
+           {% else %}
+              <i class="fa fa-arrow-down" style="font-size:20px;color:rgb(128, 0, 0)"></i>
+           {% endif %}
+       </td>   
+   
+     </tr>
+     {% endfor %}
+    </table>
+   </div>
+   <div class="col-md-2"></div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-2"></div>
+      <div class="col-md-8" style="text-align: center">
+          <p class="lead text-muted">Responsáveis Cadastrados</p>
+          <table class="table table-hover">
+           <tr>
+             <th>Nome {{empr_id}}</th>
+             <th>Função</th>
+             <th>id</th>
+             <th>E-mail</th>
+           </tr>
+           {% for elem in resp  %}
+
+           {% if elem.empresa_resp|trim ==  empr_aux|trim %}
+           
+                    <tr>
+                      <td>{{elem.nome_resp}}</td>
+                      <td>{{elem.funcao_resp}}</td> 
+                      <td>{{elem.empresa_resp}}</td> 
+                      <td>{{elem.email_resp}}</td>     
+                    </tr>
+
+            {% endif %}
+
+           {% endfor %}
+          </table>
+         </div>
+         <div class="col-md-2"></div>
+        </div>
+        
+
+   <div class="col-md-2" style="text-align: center"></div>
+   <div class="modal" id="my_modal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Envido Documento<p id="demo"></p></h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              
+          </div>
+          <div class="modal-body">
+
+              <div class="row">
+                  <div class="col-md-2"></div>
+                <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                  <input type="hidden" name="nome_documento" value=""/>
+                  <input type="hidden" name="enviado" value="1"/>
+                  <label>Validade do Documento:</label><br>
+                  <input class="form-control" type="text" name="validade_documento" id="outra_data" maxlength="10" onkeypress="mascaraData( this, event )" /><br><br>
+                  <label>Selecione o arquivo:</label><br>
+                  <input class="form-control" type="file" name="arquivo_documento" required="" id="id_arquivo_documento">
+                 <br><br>
+                  <button type="submit" class="btn btn-primary">Gravar Envio</button>
+                </form>
+                </div>
+              </div>
+
+
+
+
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+      
+
+{% endblock %}

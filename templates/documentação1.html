@@ -1,0 +1,410 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/hse">Hse</a></li>
+<li><a href="/gestao">Gestão</a></li>
+<li>Hse Documentação</li>            
+{% endblock %}
+{% load expr %}
+{% load define_action %}
+{% block css %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> {% endblock %}
+{% block T1 %}Documentação Colaborador {% endblock %}
+{% block T2 %}Conferência, Validação e Aprovação{% endblock %}
+{% block script %}
+<script>
+  $('#my_modal').on('show.bs.modal', function(e) {
+    var bookId = $(e.relatedTarget).data('book-id');
+    var txt = $(e.relatedTarget).data('txt-id');
+    $(e.currentTarget).find('input[name="nome_documento"]').val(bookId);
+    document.getElementById("demo").innerHTML = txt;
+});
+</script>
+<script>
+function mascaraData(val) {
+  var pass = val.value;
+  var expr = /[0123456789]/;
+
+  for (i = 0; i < pass.length; i++) {
+    // charAt -> retorna o caractere posicionado no índice especificado
+    var lchar = val.value.charAt(i);
+    var nchar = val.value.charAt(i + 1);
+
+    if (i == 0) {
+      // search -> retorna um valor inteiro, indicando a posição do inicio da primeira
+      // ocorrência de expReg dentro de instStr. Se nenhuma ocorrencia for encontrada o método retornara -1
+      // instStr.search(expReg);
+      if ((lchar.search(expr) != 0) || (lchar > 3)) {
+        val.value = "";
+      }
+
+    } else if (i == 1) {
+
+      if (lchar.search(expr) != 0) {
+        // substring(indice1,indice2)
+        // indice1, indice2 -> será usado para delimitar a string
+        var tst1 = val.value.substring(0, (i));
+        val.value = tst1;
+        continue;
+      }
+
+      if ((nchar != '/') && (nchar != '')) {
+        var tst1 = val.value.substring(0, (i) + 1);
+
+        if (nchar.search(expr) != 0)
+          var tst2 = val.value.substring(i + 2, pass.length);
+        else
+          var tst2 = val.value.substring(i + 1, pass.length);
+
+        val.value = tst1 + '/' + tst2;
+      }
+
+    } else if (i == 4) {
+
+      if (lchar.search(expr) != 0) {
+        var tst1 = val.value.substring(0, (i));
+        val.value = tst1;
+        continue;
+      }
+
+      if ((nchar != '/') && (nchar != '')) {
+        var tst1 = val.value.substring(0, (i) + 1);
+
+        if (nchar.search(expr) != 0)
+          var tst2 = val.value.substring(i + 2, pass.length);
+        else
+          var tst2 = val.value.substring(i + 1, pass.length);
+
+        val.value = tst1 + '/' + tst2;
+      }
+    }
+
+    if (i >= 6) {
+      if (lchar.search(expr) != 0) {
+        var tst1 = val.value.substring(0, (i));
+        val.value = tst1;
+      }
+    }
+  }
+
+  if (pass.length > 10)
+    val.value = val.value.substring(0, 10);
+  return true;
+}
+</script>
+{% endblock %}
+{% block content %}
+
+
+  <table class="table table-hover" style="text-align: center">
+      <tr>
+          <th><p class="lead text-muted">Dados Básicos Colaborador</p></th>
+         
+        </tr>
+        <tr>
+          <td> Nome : <strong>{{fun.nome_funcionario}}</strong></td>
+          
+        </tr>
+        <tr>
+            <td>Rg : <strong>{{fun.rg}}</strong></strong></td>
+            
+          </tr>
+          <tr>
+              <td>Cpf : <strong>{{fun.cpf}}</strong></td>
+              
+            </tr>
+            <tr>
+                <td>Função : <strong>{{fun.funcao}}</strong></td>
+                
+              </tr>
+              
+                <tr>
+                  <td>
+                    <form action="/doc_integracao/{{id}}" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      
+                      <input type="hidden" name="nome_documento" value=""/>
+                      <input type="hidden" name="funcionario" value="{{id}}"/>
+                      <input type="hidden" name="emp" value="{{emp}}"/>Informar data e Doc. Integração:
+                      <input type="text" name="validade_documento" id="outra_data" maxlength="10" onkeypress="mascaraData( this, event )" value="{{el.validade_documento}}" />
+                      <input type="file" name="arquivo" id="file" />
+                      <button type="submit" class="btn btn-primary">Gravar Envio</button>
+                    </form>
+                  </td>
+                  <td>
+                    <a href="/media/{{el.arquivo}}" target="_blank"><i class="fa fa-arrow-up" style="font-size:20px;color:green"></i></a>
+
+                  </td>
+                </tr>
+        
+  </table>
+  {% if fun.status == "AP"  %}
+  <p class="bg-success" style="text-align: center"><br>Status : <strong style="color: rgb(6, 0, 92)">Liberado</strong><br><br></p>
+  {% elif fun.status == "INT" %}
+  <p class="bg-warning" style="text-align: center"><br>Status : <strong style="color: rgb(6, 0, 92)">Liberado Para Integração</strong><br><br></p>
+  {% elif fun.status == "AG" %}
+  <p class="bg-warning" style="text-align: center"><br>Status : <strong style="color: rgb(6, 0, 92)">Aguardando HSE</strong><br><br></p>
+  {% elif fun.status == "RP" %}
+  <p class="bg-danger" style="text-align: center"><br>Status : <strong style="color: rgb(6, 0, 92)">Não Liberado</strong><br><br></p>
+  
+  {% endif %}        
+          
+             
+           
+</div>
+ 
+</div>
+
+<div class="container">
+ <div class="row">
+    <div class="col-md-1" style="text-align: center"></div>
+     <div class="col-xs-6" style="text-align: center">
+ <p class="lead text-muted">Documentação Complementar Colaborador</p>
+ <table class="table table-hover">
+  <tr>
+    <th>Documento Necessário</th>
+    <th>Envios</th>
+    <th>Aprov.</th>
+    <th>Validade</th>
+    <th>Hse</th>
+    <th>Alterar Status</th>
+  </tr>
+  {% for k, v in dict1.items %}
+  <tr>
+    <td data-toggle="tooltip" data-placement="left" title="{{el.toolTip}}">
+      <a href="#my_modal" data-toggle="modal" data-book-id="{{k}}" data-txt-id="{{k}}" >{{k}}</a>
+    </td>
+      
+    <td>
+        {% if v  %}
+            {% for item in v %}
+               <a href="/media/{{item}}" target="_blank"><i class="fa fa-arrow-up" style="font-size:20px;color:green"></i></a>
+            {% endfor %}
+        {% else %}
+           <i class="fa fa-arrow-down" style="font-size:20px;color:rgb(128, 0, 0)"></i>
+        {% endif %}
+    </td>  
+    <td>
+          {% for el in aux %}
+            {% if el.nome_documento|trim == k|trim %}
+              {% if el.hse == "AG" %}
+                <i class="fa fa-hourglass-1" style="font-size:18px; color: rgba(202, 206, 0, 0.808)"></i>
+              {% elif el.hse == "AP" %}
+                <i class="fa fa-thumbs-up" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+              {% elif el.hse == "RP" %}
+                <i class="fa fa-thumbs-down" style="font-size:18px; color: red"></i>
+              {% endif %}
+            {% endif%}
+          {% endfor %}
+
+      </td>
+  <td>
+    <form action="\{{id}}\action"  method="POST" >{% csrf_token %}
+      <input type="hidden" name="nome_documento" value="{{k}}"/>
+        {% for kv in aux %}
+          {% if kv.nome_documento == k %}
+            {% if kv.funcionario|trim == id|trim %}
+              <input type="text" name="Validade" id="outra_data" maxlength="10" onkeypress="mascaraData( this, event )" value="{{kv.validade_documento}}"/>        
+            {% endif %}
+          
+  </td>
+  <td>
+      <select name="sel">
+        <option  value="nada" selected>Selecione</option>
+        <option data-subtext="Breve Descrição" value="AP">Ok</option>  
+        <option data-subtext="Breve Descrição" value="RP" >N_ok</option>
+        </select>
+  </td> 
+  <td>
+   <button type="submit" class="btn btn-primary">Gravar Envio</button>
+  </td> 
+  </form>
+  </tr>
+      {% endif%}
+    {% endfor %}
+  {% endfor %}
+
+ </table>
+</div>
+
+<div class="container">
+    <div class="row">
+       <div class="col-md-1" style="text-align: center"></div>
+        <div class="col-xs-6" style="text-align: center">
+    <p class="lead text-muted">Documentação Básica Colaborador</p>
+    <table class="table table-hover">
+        {% csrf_token %}
+    <tr>
+      <th>Documento Necessário</th>
+      <th>Envios</th>
+      <th>Aprov.</th>
+      <th>Validade</th>
+      <th>Hse</th>
+      <th>Alterar Status</th>
+    </tr>
+    {% for k, v in dict.items %}
+    <tr>
+      <td data-toggle="tooltip" data-placement="left" title="{{el.toolTip}}&#013;&#013;&#013;&#013;mais qqr coisa"
+      ><a href="#my_modal" data-toggle="modal" data-book-id="{{k}}" data-txt-id="{{k}}" >{{k}}</td></a>
+      <td>
+          {% if v  %}
+              {% for item in v %}
+                 <a href="/media/{{item}}" target="_blank"><i class="fa fa-arrow-up" style="font-size:20px;color:green"></i></a>
+  
+                 
+              {% endfor %}
+          {% else %}
+             <i class="fa fa-arrow-down" style="font-size:20px;color:rgb(128, 0, 0)"></i>
+          {% endif %}
+      </td>  
+      <td>
+            {% for el in aux %}
+            {% if el.nome_documento|trim == k|trim %}
+            {% if el.hse == "AG" %}
+                <i class="fa fa-hourglass-1" style="font-size:18px; color: rgba(202, 206, 0, 0.808)"></i>
+                {% elif el.hse == "AP" %}
+                <i class="fa fa-thumbs-up" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+                 {% elif el.hse == "RP" %}
+           <i class="fa fa-thumbs-down" style="font-size:18px; color: red"></i>
+              {% endif %}
+            {% endif%}
+            {% endfor %}
+  
+            </td>
+  
+      <form id="foo" action="\{{id}}\action"  method="POST" >
+        {% csrf_token %}
+        <input type="hidden" name="nome_documento" value="{{k}}"/>
+        <td>
+          {% for kv in aux %}
+          {% if kv.nome_documento == k %}
+           {% if kv.funcionario|trim == id|trim %}
+            <input type="text" name="Validade" id="outra_data" maxlength="10" onkeypress="mascaraData( this, event )" value="{{kv.validade_documento}}"/>        
+            {% endif %}
+            
+        </td>
+      <td><select name="sel">
+          <option  value="nada" selected>Selecione</option>
+          <option data-subtext="Breve Descrição" value="AP">Ok</option>  
+          <option data-subtext="Breve Descrição" value="RP" >N_ok</option>
+            
+          <button type="submit" class="btn btn-primary">Gravar Envio</button>
+      
+          
+         
+      </select>
+        </td> 
+  <td>
+     <button type="submit" class="btn btn-primary">Gravar Envio</button>
+  </td> 
+  </form>
+    </tr>
+    {% endif%}
+    {% endfor %}
+    {% endfor %}
+  
+   </table>
+ </div>
+</div>
+</div>
+</div>
+<div class="row">
+                 <div class="col-md-6">
+                      <div class="alert alert-info" role="alert" style="text-align: center">
+                        <p class="lead text-muted">Alterar Status do Colaborador</p>
+                          <form id="foo" action="\{{id}}\action" method="POST">
+                          {% csrf_token %}
+                          <input type="radio" name="lib" value="AP">Liberar<br>
+                          <input type="radio" name="lib" value="RP" checked>Não Liberar<br>
+                          <input type="radio" name="lib" value="INT" >Liberar para Integração<br>
+                          <input type="radio" name="lib" value="BLOQ" ><span style="color: red; font-style: oblique"><strong>BLOQUEAR TERCEIRO</strong> </span><br>
+                          <input type="hidden" name="actiqqqon" value="asdwe22"/>
+                          <input type="hidden" name="data_int" value="{{fun_data|date:'Y-m- d' }}">
+                          <textarea rows="4" cols="50" name="messa">Mensagem...</textarea>
+                        <br>
+                        <input class="btn btn-primary" type="submit" name="buton" value="submeter"/>
+                          </form>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="alert alert-secondary" role="alert">
+                        <h2><small>Mensagens</small></h2>
+              
+                        <table>
+                          {% if msgs %}
+                            {% for item in msgs %}
+                            <tr>
+                           
+                              <th style="text-align: right; width: 20%"><small>{{item.ator}}<br>{{item.data|date:"D M Y"}}<br>{{item.data|time:"H : i"}}</small></th>
+                              <th>&nbsp</th>
+                              <th style="text-align: justify">{{item.msg}}</th>
+                            </tr>
+                            <tr></tr>
+                            {% endfor %}
+                          {% else %}
+                              Nenhuma mensagem  foi gravada
+                          {% endif %}
+                          </table>
+              
+
+                        
+                    </div></div>
+                  </div>
+      
+                 
+              
+</div>
+</div>
+</div>
+</div>         
+</div>
+</div>
+
+
+<div class="modal" id="my_modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><p id="demo"></p></h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          
+      </div>
+      <div class="modal-body">
+          
+         
+         
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="Modal_msg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Gravar envio de Mensagem<br><p id="demo"></p></h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            
+        </div>
+        <div class="modal-body">
+        
+          <form action="/{{id}}/message_fun" method="POST" class="post-form">
+            {% csrf_token %}
+                                   <input type="hidden" name="num_cham" value="{{obj.id}}">
+                                   <input type="hidden" name="ator" value="1">
+                                   <input type="hidden" name="data" value="1">
+                                   <textarea rows="4" cols="50" name="msg">Sua Msg aqui...</textarea><br>
+                <button type="submit" class="save btn btn-primary">    Enviar    </button>
+             </form>
+            </div>          
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+

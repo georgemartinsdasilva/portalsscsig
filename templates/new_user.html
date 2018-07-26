@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/configurate">Configurações</a></li>
+<li><a href="/usuarios">Usuários</a></li>
+<li>Novo Usuário</li>
+{% endblock %}
+{% load staticfiles %}
+{% block css %}
+<link href="{% static 'vendors/pnotify/dist/pnotify.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/pnotify/dist/pnotify.buttons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/pnotify/dist/pnotify.nonblock.css' %}" rel="stylesheet">
+   
+{% endblock %}
+{% block T1 %}Cadastrar Novo Usuário{% endblock %}
+{% block T2 %}Cadastro e permissões do novo usuário{% endblock %}
+{% block script %}
+<script src="{% static 'vendors/pnotify/dist/pnotify.js' %}"></script>
+<script src="{% static 'vendors/pnotify/dist/pnotify.buttons.js' %}"></script>
+<script src="{% static 'vendors/pnotify/dist/pnotify.nonblock.js' %}"></script>
+<script>
+      $("#div1").load(function() {
+        new PNotify({
+        title: 'Oh No!',
+        text: 'Something terrible happened.',
+        type: 'error',
+        styling: 'bootstrap3'
+      });
+  });
+
+</script>
+{% endblock %}
+{% block content %}
+<div class="row">
+<div class="col-md-6">
+<form method="post">
+  {% csrf_token %}
+    <label for="id_username">Usuário:</label><br><input class="form-control" type="text" name="username" maxlength="150" required="" id="id_username" autofocus=""><br>
+  <label for="id_password1">Senha:</label><br><input class="form-control" type="password" name="password1" required="" id="id_password1"><br>
+  <label for="id_password2">Confirmação de senha:</label><br><input class="form-control" type="password" name="password2" required="" id="id_password2"><br><br>
+    <button type="submit" class="save btn btn-primary">Registrar  </button>
+  </form>
+</div>
+{% if form.errors %}
+<div class="col-md-6" style="text-align: center" id="div1" >
+    
+    <img src="{% static 'SIG_1.png' %}" width="150" height="100" alt="Book" id="book" >
+    <p style="color:red;">Algo saiu errado ! Por favor, tente novamente.</p>
+    
+    <span class="helptext">Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.</span>
+    <span class="helptext"<ul><li>Sua senha não pode ser tão parecida com suas outras informações pessoais.</li><li>Sua senha precisa conter pelo menos 8 caracteres.</li><li>Sua senha não pode ser uma senha habitualmente utilizada.</li><li>Sua senha não pode ser inteiramente numérica.</li></ul></span>
+    <span class="helptext">Certifique-se de que as senhas informadas são identicas.</span><br>
+    <span class="helptext">Certifique-se de que não há outro usuário com o mesmo nome.</span>
+
+    
+</div>
+{% else %}
+<div class="col-md-6" style="text-align: center" id="div1" >
+    <br><br>
+    <img src="{% static 'SIG_1.png' %}" width="300 " height="200" alt="Book" id="book" >
+    
+
+    
+</div>
+{% endif %}
+
+</div>
+
+  
+  {% endblock %}
+

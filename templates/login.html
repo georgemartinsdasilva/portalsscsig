@@ -1,0 +1,59 @@
+{% load staticfiles %} 
+<!doctype html> 
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+
+    <title>PortalSscSig</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{% static 'floating-labels.css' %}">
+  </head>
+
+  <body>
+
+        <form  class="form-signin" method="post" action="{% url 'login' %}" novalidate>{% csrf_token %}
+          <div style="text-align: center">
+
+              <img src="{% static 'SIG_1.png' %}" alt="" width="250" height="150">
+
+          </div> 
+         
+      <div class="text-center mb-4">
+        
+        <h1 class="h3 mb-3 font-weight-normal"></h1>
+      </div>
+
+      <div class="form-label-group">
+          {{ form.username }}
+               <label for="inputEmail">Usuário</label>
+      </div>
+
+      <div class="form-label-group">
+          {{ form.password }}        
+          <label for="inputPassword">Senha</label>
+      </div>
+
+      <div class="checkbox mb-3" style="text-align: center">
+          Clique <a href="/new_user">AQUI</a> para se Registrar
+        <br>
+      </div>
+      <input class="btn btn-lg btn-primary btn-block" type="submit" value="login" />
+      {% if form.errors %}
+      <p style="color:red;">Seu nome de usuário e senha não corresponderam. Por favor, tente novamente.</p>
+      {% endif %}
+      <br>
+      
+
+      <p class="mt-5 mb-3 text-muted text-center">&copy; AutoCode Engenharia de Gestão - 2018</p>
+    </form>
+  </body>
+</html>
+

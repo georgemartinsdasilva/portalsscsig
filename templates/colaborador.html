@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/hse">Hse</a></li>
+<li><a href="/portaria">Portaria</a></li>
+<li>Detalhes Colaborador</li>           
+{% endblock %}
+{% block css %}{% endblock %}
+{% block T1 %}Dados do Colaborador{% endblock %}
+{% block T2 %}Visualize dados para conferência{% endblock %}
+{% block script %}{% endblock %}
+{% block content %}
+<div class="row">
+       <div class="col-md-6">
+        <h4 class="modal-title" id="myModalLabel">Nome : {{func.nome_funcionario|title}}</h4><br>
+        <p class="lead text-muted"><strong>Empresa &nbsp: &nbsp </strong>
+        &nbsp{% for nome in empw %}
+            {% if nome.id == func.empresa_id %}
+            {{nome.nome_empresa}}
+            {% endif %}
+            {% endfor %}
+        </p>
+      <p class="lead text-muted"><strong>Rg &nbsp: &nbsp </strong>&nbsp{{func.rg}}</p>
+      <p class="lead text-muted"><strong>Cpf&nbsp&nbsp&nbsp&nbsp: &nbsp </strong>&nbsp{{func.cpf}}</p>
+      <p class="lead text-muted"><strong>Função&nbsp&nbsp&nbsp&nbsp: &nbsp </strong>&nbsp{{func.funcao}}</p>
+      <p class="lead text-muted"><strong>Data da Integração &nbsp: &nbsp </strong>&nbsp
+        {% if func.data_int %}
+        {{func.data_int}}
+        {% else %}
+        DATA NÃO DEFINIDA
+        {% endif %}
+    </p>
+       </div>
+
+       <div class="col-md-6">
+        <h4 class="modal-title" id="myModalLabel">Participação nestes Serviços :</h4><br>
+    <!--Accordion wrapper-->
+    <div class="accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+    {% if aux %} 
+    {{dist}} <br>{{aux}}
+    {% for fb in dist %}
+  
+    <div class="card">
+    
+    
+        <div class="card-header" role="tab" id="headingOne">
+            <a data-toggle="collapse" data-parent="#accordionEx" href="#{{fb}}" aria-expanded="false" aria-controls="{{fb}}">
+                <h5 class="mb-0">
+                    Associado ao chamado {{fb|stringformat:"05d"}} <i class="fa fa-angle-down rotate-icon"></i>
+                </h5>
+            </a>
+        </div>
+    
+        <!-- Card body -->
+        <div id="{{fb}}" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordionEx">
+            <div class="card-body">
+                Executando os seguintes serviços: 
+                 <ul>{% for tg in aux %}
+                    {% if tg.num_cham == fb %}
+                       
+                            <li>{{tg.tps}}</li>
+                        
+                    {% endif %}
+                {% endfor %}</ul>
+            </div>
+        </div>
+    </div>
+   
+    {% endfor %} 
+    {% else %}
+    Ainda Não Participou de Nenhum Serviço
+    {% endif %}
+    <!-- Accordion card -->
+    
+        <!-- Card body -->
+       
+    </div>
+    
+    </div>
+
+           
+
+     
+
+        
+
+       
+
+{% endblock %}
+
+
+
+
+<div class="col-md-12" style="text-align: right">
+    <input class="btn btn-primary" type=button value="VOLTAR" onClick="javascript:history.go(-1);">
+</div>

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block css %}{% endblock %}
+{% block T1 %} {% endblock %}
+{% block T2 %} {% endblock %}
+{% block script %}
+<script>
+    function goBack() {
+        window.history.back();
+    }
+    </script>
+{% endblock %}
+{% block content %}
+
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Óh não! Algo saiu errado! !</h4>
+  <p>Ao gravar os dados informados ou ao enviar o e-mail de confirmação algo de inesperado aconteceu,</p>
+  <hr>
+  <p class="mb-0"><li>Verifique se a empresa que pretende associar a este email já não se encontra cadastrada.
+                    <li>Verifique se você não informou caracteres não permitidos.</li><br><br>
+  </li> <button onclick="goBack()">Retornar</button></p>
+</div>
+{% endblock %}

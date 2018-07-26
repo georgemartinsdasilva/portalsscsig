@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load define_action %}
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block T1 %}Cadastro de Emails Hse{% endblock %}
+{% block T2 %}Emails que serão Notificados{% endblock %}
+{% block script %}
+<script>
+    $('#my_modal').on('show.bs.modal', function(e) {
+      var bookId = $(e.relatedTarget).data('book-id');
+      var txt = $(e.relatedTarget).data('txt-id');
+      $(e.currentTarget).find('input[name="nome_documento"]').val(bookId);
+      document.getElementById("demo").innerHTML = txt;
+      var url = "/exlude_doc/" + $(e.relatedTarget).data('book-url');
+      var element = document.getElementById('YOUR_ID');
+      element.setAttribute("href",url)
+  });
+  </script>
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+      <form method="POST">
+          {% csrf_token %}
+          
+            <p><label for="id_nome">Nome:</label> <input class="form-control" type="text" name="Nome" id="Nome" required="" maxlength="30"></p>
+      <p><label for="id_txt1">Email:<br></label> <input class="form-control" type="text" name="email" id="email" required="" maxlength="30"></p>
+      <p><label for="id_tipo">ativo:<br></label> 
+         <select name="ativo" class="form-control">
+          <option value="">Selecione</option>
+       
+        <option value="0">Inativo</option>
+        <option value="1">Ativo</option>
+       
+      </select></p>
+      
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+  </div>
+{% if form.erros %}
+  qs    qs  qs
+{% endif %}
+    <div class="col-md-8" style="text-align: center">
+        <img src="{% static 'SIG_1.png' %}" width="150" height="100" alt="Book" id="book" >
+        <p style="color:red;">Instruções para cadastro de Email.</p>
+    
+      
+      
+      <span class="helptext">Os emails aqui cadastrados receberão notificações quando o sistema entender que <br>
+          um analista do Hse deve ser avisado .<br></span>
+      
+ </div>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+      <div class="col-md-8" style="text-align: center">
+          <p class="lead text-muted">Emails Cadastrados</p>
+          <table class="table table-hover">
+           <tr>
+             <th>Nome {{empr_id}}</th>
+             <th>Email </th>
+             <th>Status </th>
+             <th>Altera </th>
+             
+             <th>Exclui</th>
+           </tr>
+           {% for elem in data %}
+
+          
+           
+                    <tr>
+                      <td data-toggle="tooltip" data-placement="top" title="{{elem.toolTip}}">{{elem.Nome|title}}</td>
+                      <td>{{elem.email}}</td> 
+                      <td>{{elem.ativo}}</td> 
+                      <td style="color: red"><a href="#my_modal" data-toggle="modal" data-book-id="{{elem.id}}" data-txt-id="{{elem.nome}}" data-book-url="{{elem.id|encoder}}" >Altera</a></td>     
+
+                      <td style="color: red"><a href="#my_modal" data-toggle="modal" data-book-id="{{elem.id}}" data-txt-id="{{elem.nome}}" data-book-url="{{elem.id|encoder}}" ><span class="fa fa-close" aria-hidden="true"></span></a></td>     
+                    </tr>
+
+         
+
+           {% endfor %}
+          </table>
+         </div>
+         <div class="col-md-2"></div>
+        </div>
+
+      
+
+
+
+        <div class="modal" id="my_modal">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Deseja excluir o Documento<br><p id="demo"></p></h4>
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    
+                </div>
+                <div class="modal-body">
+                  
+                    <a id="YOUR_ID" href="#" ><button  class="btn btn-danger">Clique para Excluir</button></a>
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+
+
+{% endblock %}
+

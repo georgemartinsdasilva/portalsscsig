@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block css %}{% endblock %}
+{% block T1 %} {% endblock %}
+{% block T2 %} {% endblock %}
+{% block script %}
+<script>
+  function goBack() {
+      window.history.back();
+  }
+  </script>
+{% endblock %}
+{% block content %}
+
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Perfeito!</h4>
+  <p>Você solicitou com sucesso o cadastro ! Acompanhe o andamento de seu pedido em seu email cadastrado.</p>
+  <hr>
+  <p class="mb-0"><li>Um email será enviado para <strong>{{Solmail}}</strong> solicitando o cadastro.</li>
+                  <li>Assim que o cadastro for realizado você será notificado em <strong>{{Usmail}}</strong></li><br><br>
+  </li> <form action="/hse">
+  
+    <button type="submit" class="btn btn-danger">Voltar</button>
+  </form></p>
+</div>
+{% endblock %}
+

@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+{% load define_action %}
+{% block css %} 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ {% endblock %}
+{% block T1 %}Documentação Colaborador {% endblock %}
+{% block T2 %}Detalhes dos dados e status de aprovação{% endblock %}
+{% block script %}
+<script>
+    $('#my_modal').on('show.bs.modal', function(e) {
+      var bookId = $(e.relatedTarget).data('book-id');
+      var txt = $(e.relatedTarget).data('txt-id');
+      $(e.currentTarget).find('input[name="nome_documento"]').val(bookId);
+      document.getElementById("demo").innerHTML = txt;
+  });
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+  </script>
+  <script>
+      function mascaraData(val) {
+        var pass = val.value;
+        var expr = /[0123456789]/;
+      
+        for (i = 0; i < pass.length; i++) {
+          // charAt -> retorna o caractere posicionado no índice especificado
+          var lchar = val.value.charAt(i);
+          var nchar = val.value.charAt(i + 1);
+      
+          if (i == 0) {
+            // search -> retorna um valor inteiro, indicando a posição do inicio da primeira
+            // ocorrência de expReg dentro de instStr. Se nenhuma ocorrencia for encontrada o método retornara -1
+            // instStr.search(expReg);
+            if ((lchar.search(expr) != 0) || (lchar > 3)) {
+              val.value = "";
+            }
+      
+          } else if (i == 1) {
+      
+            if (lchar.search(expr) != 0) {
+              // substring(indice1,indice2)
+              // indice1, indice2 -> será usado para delimitar a string
+              var tst1 = val.value.substring(0, (i));
+              val.value = tst1;
+              continue;
+            }
+      
+            if ((nchar != '/') && (nchar != '')) {
+              var tst1 = val.value.substring(0, (i) + 1);
+      
+              if (nchar.search(expr) != 0)
+                var tst2 = val.value.substring(i + 2, pass.length);
+              else
+                var tst2 = val.value.substring(i + 1, pass.length);
+      
+              val.value = tst1 + '/' + tst2;
+            }
+      
+          } else if (i == 4) {
+      
+            if (lchar.search(expr) != 0) {
+              var tst1 = val.value.substring(0, (i));
+              val.value = tst1;
+              continue;
+            }
+      
+            if ((nchar != '/') && (nchar != '')) {
+              var tst1 = val.value.substring(0, (i) + 1);
+      
+              if (nchar.search(expr) != 0)
+                var tst2 = val.value.substring(i + 2, pass.length);
+              else
+                var tst2 = val.value.substring(i + 1, pass.length);
+      
+              val.value = tst1 + '/' + tst2;
+            }
+          }
+      
+          if (i >= 6) {
+            if (lchar.search(expr) != 0) {
+              var tst1 = val.value.substring(0, (i));
+              val.value = tst1;
+            }
+          }
+        }
+      
+        if (pass.length > 10)
+          val.value = val.value.substring(0, 10);
+        return true;
+      }
+      </script>
+{% endblock %}
+{% block content %}
+
+
+
+  <table class="table table-hover" style="text-align: center">
+      <tr>
+          <th><p class="lead text-muted">Dados Básicos Colaborador</p></th>
+         
+        </tr>
+        <tr>
+          <td> Nome : <strong>{{fun.nome_funcionario}}</strong></td>
+          
+        </tr>
+        <tr>
+            <td>Rg : <strong>{{fun.rg}}</strong></strong></td>
+            
+          </tr>
+          <tr>
+              <td>Cpf : <strong>{{fun.cpf}}</strong></td>
+              
+            </tr>
+            <tr>
+                <td>Função : <strong>{{fun.funcao}}</strong></td>
+                
+              </tr>
+              <tr>
+                  <td>Data Integração : <strong>{{fun.data_int}}</strong></td>
+                  
+                </tr>
+               
+        
+  </table>
+  {% if fun.status == "AP" %}
+  <p class="bg-success" style="text-align: center"><br>Status : <strong style="color: rgb(6, 0, 92)">Liberado</strong><br><br></p>
+  {% elif fun.status == "RP" %}
+  <p class="bg-danger" style="text-align: center"><br>Status : <strong style="color: rgb(6, 0, 92)">Não Liberado</strong><br><br></p>
+  {% elif fun.status == "AG" %}
+  <p class="bg-warning" style="text-align: center"><br>Status : <strong style="color: rgb(6, 0, 92)">Aguardando Hse</strong><br><br></p>
+  {% elif fun.status == "INT" %}
+  <p class="bg-warning" style="text-align: center"><br>Status : <strong style="color: rgb(6, 0, 92)">Liberado para Integração</strong><br><br></p>
+  {% endif %}        
+          
+             
+           
+         
+       </div>
+ 
+</div>
+<div class="container">
+  <div class="row">
+    <p class="lead text-muted">Documentação Básica Colaborador</p>
+    <table class="table table-hover">
+      <tr>
+        <th>Documento (Click para Enviar)</th>
+        <th>Link do Arquivo</th>
+        <th>Validade</th>
+        <th>Aprovação Hse</th>
+      </tr>
+      {% for item in a_docs %}
+      <tr>
+    
+    <td><a href="#my_modal" data-toggle="modal" data-book-id="{{item}}" data-txt-id="{{item}}" data-toggle="tooltip" data-placement="top" title="Tooltip on top" >{{item}}</a></td>
+    <td style="">
+      {% for cx in envs %}
+    
+      {% if cx.nome_documento|trim == item|trim %}
+       <a href="/media/{{cx.arquivo_documento}}" target="_blank">LINK ARQUIVO</a><br>
+      {% endif %}
+    
+    {% endfor %}
+    </td>
+    <td>{% for cx in envs %}
+    
+      {% if cx.nome_documento|trim == item|trim %}
+        {{cx.validade_documento}}<br>
+      {% endif %}
+    
+    {% endfor %}</td>
+    <td>{% for cx in envs %}
+    
+      {% if cx.nome_documento|trim == item|trim %}
+          {% if cx.hse == "AG" %}
+            <span>Aguardando Aprovação</span><br>
+            {% elif cx.hse == "RP" %}
+                <span>Documento Reprovado</span><br>
+            {% elif cx.hse == "AP" %}
+              <span>Documento Aprovado</span><br>
+          {% endif %}
+      {% endif %}
+    
+    {% endfor %}</td>
+    
+      </tr>
+      {% endfor %}
+    
+     </table>
+  </div>
+</div>
+
+<div class="container">
+ <div class="row">
+ <p class="lead text-muted">Documentação Complementar Colaborador</p>
+ <table class="table table-hover">
+  <tr>
+    <th>Documento (Click para Enviar)</th>
+    <th>Link do Arquivo</th>
+    <th>Validade</th>
+    <th>Aprovação Hse</th>
+  </tr>
+  {% for item in c_docs %}
+  <tr>
+
+<td><a href="#my_modal" data-toggle="modal" data-book-id="{{item}}" data-txt-id="{{item}}" data-toggle="tooltip" data-placement="top" title="{{item.tooltip}}" >{{item}}</a></td>
+<td style="">
+  {% for cx in envs %}
+
+  {% if cx.nome_documento|trim == item|trim %}
+   <a href="/media/{{cx.arquivo_documento}}" target="_blank">LINK ARQUIVO</a> 
+  {% endif %}
+
+{% endfor %}
+</td>
+<td>{% for cx in envs %}
+
+  {% if cx.nome_documento|trim == item|trim %}
+    {{cx.validade_documento}}
+  {% endif %}
+
+{% endfor %}</td>
+<td>{% for cx in envs %}
+
+  {% if cx.nome_documento|trim == item|trim %}
+    {% if cx.hse == "AG" %}
+    <span>Aguardando Aprovação</span>
+    {% elif cx.hse == "AP" %}
+    <span>Documento Aprovado</span>
+  {% endif %}
+  {% endif %}
+
+{% endfor %}</td>
+
+  </tr>
+  {% endfor %}
+
+ </table>
+ <div class="col-md-6">
+    <div class="alert alert-secondary" role="alert">
+        <h2><small>Mensagens</small></h2>
+
+        <table>
+          {% if msgs %}
+            {% for item in msgs %}
+            <tr>
+           
+              <th style="text-align: right"><small>{{item.ator}}<br>{{item.data|date:"D M Y"}}<br>{{item.data|time:"H : i"}}</small></th>
+              <th>&nbsp</th>
+              <th style="text-align: justify">{{item.msg}}</th>
+            </tr>
+            <tr></tr>
+            {% endfor %}
+          {% else %}
+              Nenhuma mensagem  foi gravada
+          {% endif %}
+          </table>
+
+          <a href="#Modal_msg" data-toggle="modal" data-target="#Modal_msg"><button type="button" class="btn btn-primary">Enviar Mensagem</button></a>
+
+        
+    </div></div>
+</div>
+</div>
+
+   
+ </div>
+</div>
+</div>
+</div>
+
+</div>
+</div>         
+</div>
+</div>
+ 
+
+<div class="modal" id="my_modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><p id="demo"></p></h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-2"></div>
+        <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+          <input type="hidden" name="nome_documento" value=""/>
+          <input type="hidden" name="enviado" value="1"/>
+          <input type="hidden" name="emp" value="{{emp}}"/>
+          <label>Validade do Documento:</label><br>
+          <input class="form-control" type="text" name="validade_documento" id="outra_data" maxlength="10" onkeypress="mascaraData( this, event )" /><br><br>
+          <label>Selecione o arquivo:</label><br>
+          <input class="form-control" type="file" name="arquivo_documento" required="" id="id_arquivo_documento">
+          <input type="hidden" name="email_resp" value="1"/>
+          <input type="hidden" name="email_emp" value="1"/>
+         <br><br>
+          <button type="submit" class="btn btn-primary">Gravar Envio</button>
+        </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Sair</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal" id="Modal_msg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Gravar uma Mensagem<br><p id="demo"></p></h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            
+        </div>
+        <div class="modal-body">
+       
+
+
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-xs-6">
+                <div class="well">
+                    <p class="lead">Escreva sua <span class="text-success">Mensagem</span>  aqui:</p>
+                    <form action="/message_sol/{{id}}/f_terc" method="POST" class="post-form">
+                      {% csrf_token %}
+            
+                     <input type="hidden" name="num_cham" value="{{id}}">
+                     <input type="hidden" name="ator" value="1">
+                     <input type="hidden" name="emp" value="1">
+                     <input type="hidden" name="data_int" value="{{fun_data}}">
+                     <input type="hidden" name="data" value="1">
+                     <input type="hidden" name="empresa" value="{{emp}}">
+                     <input type="hidden" name="fun" value="{{id}}">
+                     <textarea rows="7" cols="40" name="msg"></textarea><br>
+                          
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-xs-6">
+                <p class="lead">Encaminhar  <span class="text-success">E-Mail</span>   para :</p>
+                <ul class="list-unstyled" style="line-height: 2">
+
+                    <p data-toggle="tooltip" data-placement="left" title="{{request.user.email}}"><input type="checkbox" name="ema[]" id="hobby2" value="{{request.user.email}}" class="flat"/>Enviar para Mim</p>
+                    <p data-toggle="tooltip" data-placement="left" title="{{obj.email_solicitante}}"><input type="checkbox" name="ema[]" id="hobby2" value="{{obj.email_solicitante}}" class="flat"/>Enviar para o Solicitante</p>
+                    <p data-toggle="tooltip" data-placement="left" title="{{obj.email_terc}}"><input type="checkbox" name="ema[]" id="hobby2" value="{{obj.email_terc}}" class="flat"/>Enviar para o Terceiro</p>
+                    <p data-toggle="tooltip" data-placement="left" title="{{Em_g}}"><input type="checkbox" name="ema[]" id="hobby2" value="{{Em_g}}" class="flat"/>Enviar para o Gestor do Solicitante</p>
+
+                </ul>
+            </div>
+            <button type="submit" class="btn btn-info btn-block">    Enviar Mensagem   </button>
+          </form>
+        </div>
+
+
+
+
+
+
+
+         
+            </div>          
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+{% endblock %}
+

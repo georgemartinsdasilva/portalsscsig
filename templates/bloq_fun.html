@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/hse">Hse</a></li>
+<li><a href="/gestao">Gestão</a></li>
+<li><a href=" ">Hse Documentos</a></a></li>  
+<li>Bloqueio</li>          
+{% endblock %}
+{% block css %}{% endblock %}
+{% block T1 %}<span style="color: red">Bloquear Colaborador</span>{% endblock %}
+{% block T2 %}Tornar o colaborador Inapto para realizar qualquer atividade{% endblock %}
+{% block script %}{% endblock %}
+{% block content %}
+
+
+
+
+<div class="row">
+<div class="col-md-5">
+    <form method="POST">
+            {% csrf_token %}
+<p><label for="id_fun">Colaborador:</label><br>
+    <select name="fun" required="" id="id_fun" class="form-control">
+<option value="" selected="">---------</option>
+
+<option value="{{fun.id}}"><strong>{{fun.nome_funcionario|title}}</strong></option>
+
+</select></p>
+
+<p><label for="id_motivo">Motivo:</label> <br>
+<textarea name="motivo" id="id_motivo" required="" maxlength="1000" class="form-control" rows="10"></textarea>
+</p>
+<button type="submit" class="btn btn-danger">Bloquear Colaborador</button>
+</form>
+</div>
+<div class="col-md-7"></div>
+</div>
+
+
+
+{% endblock %}

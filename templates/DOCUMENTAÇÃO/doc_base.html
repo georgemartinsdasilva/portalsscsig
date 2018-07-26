@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}{% endblock %}
+{% block T1 %} Documentação{% endblock %}
+{% block T2 %} wcwecwecwec{% endblock %}
+{% block script %}
+<script src="{% static 'jquery.js' %}"></script>
+
+<script>
+    $("#link1").click(function(){
+                $.ajax({
+                        url: 'my_view',
+                        datatype: 'json',
+                        type: 'GET',
+                        success: function(data) {
+                            $( '#message' ).text(data);
+                        }
+        });
+            });
+ 
+        </script>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+        <div class="col-md-2"> <br><br><div class="list-group">
+ 
+                <div class="btn-group dropright">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Visão Geral
+                        </button>
+                        <div class="dropdown-menu">
+                                <a href="/media/docs/Visão Geral.pdf" target="_blanck" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Início</span></a>
+                                <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Usuários</span></a>
+                                <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Peril</span></a>
+                          <!-- Dropdown menu links -->
+                        </div>
+                      </div>
+                      <br>
+              <div class="btn-group dropright">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Módulo - Hse
+                    </button>
+                    <div class="dropdown-menu">
+                            <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+                            <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+                            <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+                      <!-- Dropdown menu links -->
+                    </div>
+                  </div>
+                  <br>
+                  <div class="btn-group dropright">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Módulo - Pré Print
+                        </button>
+                        <div class="dropdown-menu">
+                                <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+                                <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+                                <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+                          <!-- Dropdown menu links -->
+                        </div>
+                      </div>
+                      <br>
+                      <div class="btn-group dropright">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Módulo - Qualidade
+                            </button>
+                            <div class="dropdown-menu">
+                                    <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+                                    <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+                                    <a href="#" class="list-group-item"><i class="fa fa-question-circle"></i> <span>Support</span></a>
+                              <!-- Dropdown menu links -->
+                            </div>
+                          </div>
+          
+          
+            </div></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-9">
+
+                 <main role="main" class="container">
+          <a href="" id="link1"  data-book-id="etero">qweqe</a>
+<p id="message"></p>
+    <h1 class="mt-5">PortalSscSig Documentação</h1>
+    <p class="lead">Navegue no menu lateral para encontrar informações a respeito das funcionalidades e secções desta aplicação.</p>
+    <p></p>
+   
+    
+  </main><div class="row" style="text-align: right">
+        <img src="{% static 'SIG_1.png' %}" width="450" height="300">
+</div>
+  
+            </div>
+    </div>
+
+{% endblock %}

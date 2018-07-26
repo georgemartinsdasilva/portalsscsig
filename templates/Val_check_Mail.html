@@ -1,0 +1,332 @@
+{% extends "base_mail.html" %}
+{% load staticfiles %}
+
+{% block subject_content %}PortalSscSig - Validade Documentação - {{el.nome_documento}}{% endblock %}
+
+{% block body_content %}
+<style type="text/css" rel="stylesheet" media="all">body{
+    width:100%!important;
+    height:100%;
+    margin:0;
+    line-height:1.4;
+    background-color:#F2F4F6;
+    color:#74787E;
+    -webkit-text-size-adjust:none
+}
+body{
+    width:100%!important;
+    height:100%;
+    margin:0;
+    line-height:1.4;
+    background-color:#F2F4F6;
+    color:#74787E;
+    -webkit-text-size-adjust:none
+}
+.email-wrapper{
+    width:100%;
+    margin:0;
+    padding:0;
+    background-color:#F2F4F6
+}
+.email-content{
+    width:100%;
+    margin:0;
+    padding:0
+}
+.email-masthead{
+    padding:25px0;
+    text-align:center
+}
+.email-masthead_logo{
+    max-width:400px;
+    border:0
+}
+.email-masthead_name{
+    font-size:16px;
+    font-weight:bold;
+    color:#2F3133;
+    text-decoration:none;
+    text-shadow:01px0white
+}
+.email-logo{
+    max-height:50px
+}
+.email-body{
+    width:100%;
+    margin:0;
+    padding:0;
+    border-top:1pxsolid#EDEFF2;
+    border-bottom:1pxsolid#EDEFF2;
+    background-color:#FFF
+}
+.email-body_inner{
+    width:570px;
+    margin:0auto;
+    padding:0
+}
+.email-footer{
+    width:570px;
+    margin:0auto;
+    padding:0;
+    text-align:center
+}
+.email-footerp{
+    color:#AEAEAE
+}
+.body-action{
+    width:100%;
+    margin:30pxauto;
+    padding:0;
+    text-align:center
+}
+.body-dictionary{
+    width:100%;
+    overflow:hidden;
+    margin:20pxauto10px;
+    padding:0
+}
+.body-dictionarydd{
+    margin:0010px0
+}
+.body-dictionarydt{
+    clear:both;
+    color:#000;
+    font-weight:bold
+}
+.body-dictionarydd{
+    margin-left:0;
+    margin-bottom:10px
+}
+.body-sub{
+    margin-top:25px;
+    padding-top:25px;
+    border-top:1pxsolid#EDEFF2;
+    table-layout:fixed
+}
+.body-suba{
+    word-break:break-all
+}
+.content-cell{
+    padding:35px;
+    background-image:linear-gradient( rgba(255,255,255,.7) 0%,rgba(255,255,255,.7) 100%),url("")
+}
+.align-right{
+    text-align:right
+}
+h1{
+    margin-top:0;
+    color:#2F3133;
+    font-size:19px;
+    font-weight:bold
+}
+h2{
+    margin-top:0;
+    color:#2F3133;
+    font-size:16px;
+    font-weight:bold
+}
+h3{
+    margin-top:0;
+    color:#2F3133;
+    font-size:14px;
+    font-weight:bold
+}
+blockquote{
+    margin:1.7rem0;
+    padding-left:0.85rem;
+    border-left:10pxsolid#F0F2F4
+}
+blockquotep{
+    font-size:1.1rem;
+    color:#999
+}
+blockquotecite{
+    display:block;
+    text-align:right;
+    color:#666;
+    font-size:1.2rem
+}
+cite{
+    display:block;
+    font-size:0.925rem
+}
+cite:before{
+    content:"2014020"
+}
+p{
+    margin-top:0;
+    color:#74787E;
+    font-size:16px;
+    line-height:1.5em
+}
+p.sub{
+    font-size:12px
+}
+p.center{
+    text-align:center
+}
+table{
+    width:100%
+}
+th{
+    padding:0px5px;
+    padding-bottom:8px;
+    border-bottom:1pxsolid#EDEFF2
+}
+thp{
+    margin:0;
+    color:#9BA2AB;
+    font-size:12px
+}
+td{
+    padding:10px5px;
+    color:#74787E;
+    font-size:15px;
+    line-height:18px
+}
+.content{
+    align:center;
+    padding:0
+}
+.data-wrapper{
+    width:100%;
+    margin:0;
+    padding:35px0
+}
+.data-table{
+    width:100%;
+    margin:0
+}
+.data-tableth{
+    text-align:left;
+    padding:0px5px;
+    padding-bottom:8px;
+    border-bottom:1pxsolid#EDEFF2
+}
+.data-tablethp{
+    margin:0;
+    color:#9BA2AB;
+    font-size:12px
+}
+.data-tabletd{
+    padding:10px5px;
+    color:#74787E;
+    font-size:15px;
+    line-height:18px
+}
+.button{
+    display:inline-block;
+    width:200px;
+    background-color:#3869D4;
+    border-radius:3px;
+    color:#fff;
+    font-size:15px;
+    line-height:45px;
+    text-align:center;
+    text-decoration:none;
+    -webkit-text-size-adjust:none;
+    mso-hide:all
+}
+@mediaonlyscreenand(max-width:600px){
+    .email-body_inner,.email-footer{
+        width:100%!important
+    }
+}
+@mediaonlyscreenand(max-width:500px){
+    .button{
+        width:100%!important
+    }
+}
+</style> <style type="text/css">.tg{
+    border-collapse:collapse;
+    border-spacing:0
+}
+.tg td{
+    font-family:Arial,sans-serif;
+    font-size:14px;
+    padding:10px 5px;
+    border-style:solid;
+    border-width:1px;
+    overflow:hidden;
+    word-break:normal;
+    border-color:black
+}
+.tg th{
+    font-family:Arial,sans-serif;
+    font-size:14px;
+    font-weight:normal;
+    padding:10px 5px;
+    border-style:solid;
+    border-width:1px;
+    overflow:hidden;
+    word-break:normal;
+    border-color:black
+}
+.tg .tg-t1lb{
+    font-family:"Courier New",Courier,monospace!important;
+    border-color:inherit;
+    vertical-align:top
+}
+.tg .tg-gc4a{
+    font-family:"Courier New",Courier,monospace!important;
+    border-color:inherit;
+    text-align:center
+}
+.tg .tg-ji20{
+    font-family:"Courier New",Courier,monospace!important;
+    border-color:inherit
+}
+</style>
+
+<!-- ###  ##  ##   ####  ###  ##  ### ## # # ### #### ##   ### ## ## ### ### #### ### ## ###   #### ### ## #3-->
+
+<table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+       <td class="content">
+          <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
+             <tr style="text-align: center">
+                <td class="email-masthead"><img src="cid:ATT00001.png" class="email-logo" width="150px" height="100px"/></td>
+             </tr>
+             <tr>
+                <td class="email-body" width="100%">
+                   <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0">
+                      <tr>
+                         <td class="content-cell">
+                            <h1>Olá se você está recebendo este email, é porque interessa a voçê sabe que o documento {{el.nome_documento}} do funcionário xxx está {{msg}}</h1>
+                            
+                            <hr />
+                           
+                            <hr />
+                            <p>Em caso de dúvidas entre em contato por: <a href="mailto:mail_HSE@gmail.com">mail_HSE@gmail.com</a> ou pelos telefones: (41)XXXX-XXXX  ; (41)XXXX-XXXX</p>
+                            <p>Best Regards / Atenciosamente,<br /> Setor HSE-Sig Combibloc</p>
+                         </td>
+                      </tr>
+                   </table>
+                </td>
+             </tr>
+             <tr>
+                <td>
+                   <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0">
+                      <tr>
+                         <td class="content-cell">
+                            <p class="sub center" style="color:blue">
+                               <strong>
+                            <h2>SIG Combibloc do Brasil Ltda.</h2></strong>
+                            <p style="color:blue">Rodovia BR 277 - 120,4 KM</p>
+                            <p style="color:blue">83605-590 - Campo Largo - Paraná / Brasil</p>
+                            </p>
+                         </td>
+                      </tr>
+                   </table>
+                </td>
+             </tr>
+          </table>
+       </td>
+    </tr>
+ </table>
+
+
+
+
+
+{% endblock %}

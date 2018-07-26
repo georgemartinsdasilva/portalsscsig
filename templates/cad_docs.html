@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/configurate">Configurações</a></li>
+<li><a href="/configurate_hse">Configurações Hse</a></li>
+<li>Cadastro de Documentos</li>           
+{% endblock %}
+{% load staticfiles %}
+{% load define_action %}
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block T1 %}Cadastro de Documentos{% endblock %}
+{% block T2 %}Documentos a serem exigidos{% endblock %}
+{% block script %}
+<script>
+    $('#my_modal').on('show.bs.modal', function(e) {
+      var bookId = $(e.relatedTarget).data('book-id');
+      var txt = $(e.relatedTarget).data('txt-id');
+      $(e.currentTarget).find('input[name="nome_documento"]').val(bookId);
+      document.getElementById("demo").innerHTML = txt;
+      var url = "/exlude_doc/" + $(e.relatedTarget).data('book-url');
+      var element = document.getElementById('YOUR_ID');
+      element.setAttribute("href",url)
+  });
+  </script>
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+      <form method="POST">
+          {% csrf_token %}
+          
+            <p><label for="id_nome">Nome:</label> <input class="form-control" type="text" name="nome" id="id_nome" required="" maxlength="30"></p>
+      <p><label for="id_txt1">Txt1:<br></label> <input class="form-control" type="text" name="txt1" id="id_txt1" required="" maxlength="30"></p>
+      <p><label for="id_txt2">Txt2:<br></label> <input class="form-control" type="text" name="txt2" id="id_txt2" required="" maxlength="30"></p>
+      <p><label for="id_tipo">Tipo:<br></label> 
+         <select name="tipo" class="form-control">
+          <option value="">Selecione</option>
+       
+        <option value="B">Doc. Básica do Colaborador - B</option>
+        <option value="C">Doc. Complementar do Colaborador - C</option>
+        <option value="D">Doc. Referente à Empresa - D</option>
+       
+      </select></p>
+      <p><label for="id_toolTip">ToolTip:<br></label> <input class="form-control" type="text" name="toolTip" id="id_toolTip" required="" maxlength="500"></p>
+      
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+  </div>
+ 
+    <div class="col-md-8" style="text-align: center">
+        <img src="{% static 'SIG_1.png' %}" width="150" height="100" alt="Book" id="book" >
+        <p style="color:red;">Instruções para cadastro de Documentos.</p>
+    
+      
+      
+      <span class="helptext">Os campos<strong> Nome, Txt1, Txt2</strong> Podem ser preenchidos igualmente.<br></span>
+      <span class="helptext"> Exemplo : <strong>CURSO DE GUINDASTE E/OU MUNCK</strong></span><br><br>
+      <span class="helptext">O Campo <strong> Tipo</strong> define a classe do documento, ou seja<br>Se refere á documentação Básica do colaborador, ou<br>se refere á documentação Complementar do colaborador, ou<br>se refere à documentação da empresa.</span><br>
+      <span class="helptext"><br>O campo <strong>ToolTip</strong> define o texto apresentado pelo toolTip nos links<br> onde o documento é manipulado.</span>
+ </div>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+      <div class="col-md-8" style="text-align: center">
+          <p class="lead text-muted">Documentos Cadastrados</p>
+          <table class="table table-hover">
+           <tr>
+             <th>Nome {{empr_id}}</th>
+             <th>Tipo Doc </th>
+             <th>Exclui</th>
+           </tr>
+           {% for elem in docu %}
+
+          
+           
+                    <tr>
+                      <td data-toggle="tooltip" data-placement="top" title="{{elem.toolTip}}">{{elem.nome}}</td>
+                      <td>{{elem.tipo}}</td> 
+                      <td style="color: red"><a href="#my_modal" data-toggle="modal" data-book-id="{{elem.id}}" data-txt-id="{{elem.nome}}" data-book-url="{{elem.id|encoder}}" ><span class="fa fa-close" aria-hidden="true"></span></a></td>     
+                    </tr>
+
+         
+
+           {% endfor %}
+          </table>
+         </div>
+         <div class="col-md-2"></div>
+        </div>
+
+      
+
+
+
+        <div class="modal" id="my_modal">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Deseja excluir o Documento<br><p id="demo"></p></h4>
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    
+                </div>
+                <div class="modal-body">
+                  
+                    <a id="YOUR_ID" href="#" ><button  class="btn btn-danger">Clique para Excluir</button></a>
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+
+
+{% endblock %}
+

@@ -1,0 +1,490 @@
+{% extends 'base_cham.html' %}
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/hse">Hse</a></li>
+<li><a href="/gestao">Gestão</a></li>
+<li>Hse Chamados</li>            
+{% endblock %}
+{% load staticfiles %}
+{% load define_action %}
+{% block css %}
+<link href="{% static 'timeline.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block T1 %} Acompanhar Chamado{% endblock %}
+{% block T2 %} {% endblock %}
+{% block script %}
+
+<script>
+    $('#Modal_resp').on('show.bs.modal', function(e) {
+      var bookId = $(e.relatedTarget).data('book-id');
+      var txt = $(e.relatedTarget).data('txt-id');
+      $(e.currentTarget).find('input[name="uuu"]').val(bookId);
+      document.getElementById("wwqq").innerHTML = txt;
+  });
+  </script>
+    <script>
+      $('#modal_msg').on('show.bs.modal', function(e) {
+        var txt = $(e.relatedTarget).data('txt-id');
+        document.getElementById("demo").innerHTML = txt;
+        var bookId = $(e.relatedTarget).data('book-id');
+        $(e.currentTarget).find('input[name="tps"]').val(bookId);
+        var url = "/exlude_fun/" + $(e.relatedTarget).data('book-url');
+        var element = document.getElementById('YOUR_ID');
+        element.setAttribute("href",url);
+    });
+    </script>
+    <script>
+        $('#Modal_hist').on('show.bs.modal', function(e) {
+          var txt = $(e.relatedTarget).data('txt-id');
+          document.getElementById("demo").innerHTML = txt;
+          var bookId = $(e.relatedTarget).data('book-id');
+          $(e.currentTarget).find('input[name="tps"]').val(bookId);
+          var url = "/exlude_fun/" + $(e.relatedTarget).data('book-url');
+          var element = document.getElementById('YOUR_ID');
+          element.setAttribute("href",url);
+      });
+      </script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#datatable').DataTable();
+            } );
+</script>
+
+{% endblock %}
+{% block content %}
+<form type="submit" action="/{{obj.id}}/{{id}}/saveCham" method="POST" class="post-form">
+  {% csrf_token %}
+<br>
+<div class="container">
+<div class="row">
+    <div class="col-md-4" style="text-align: justify">
+        <h3>SOLICITANTE</h3>
+        Solicitante : <strong>{{obj.solicitante|title}}</strong><br>
+        Setot : <strong>{{obj.setor_solicitante|title}}</strong><br>
+        Email : <strong>{{obj.email_solicitante}}</strong><br>
+        Gestão : <strong>{{obj.gestor_solicitante|title}}</strong><br>
+    </div>
+    <div class="col-md-4">
+        <h3>EMPRESA</h3>
+        {% for data in emp %}
+        {% if data.id == obj.empresa_id %}
+        Razão : <strong>{{data.nome_empresa}}</strong><br>
+        Responsável : <strong>
+          {% for el in resp %}
+          {% if el.id|trim == obj.resp_terc|trim %}
+          <a href="#Modal_resp" data-target="#Modal_resp" data-toggle="modal" data-book-id="{{el.nome_resp|title}}" data-txt-id="{{el.nome_resp|title}}">{{el.nome_resp|title}}</a> 
+        {% endif %}
+      {% endfor %}
+    </strong><br>
+        Email : <strong>{{data.email}}</strong><br>
+        Telefone : <strong>{{data.telefone}}</strong><br>
+        {% endif %}
+                                      {% endfor %}
+    </div>
+    <div class="col-md-4">
+            <h3>CHAMADO # {{N_CHM}}</h3>
+            <div class="alert alert-info" role="alert" style="text-align: center"><strong><p style="color: crimson">{{obj.status|title}}</p></strong>
+              <select name="gr" id="basic" class="selectpicker show-tick form-control" data-live-search="true">
+                  <option data-subtext="Breve Descrição" selected>Selecione</option>
+                  <option data-subtext="Breve Descrição">Liberar Integração</option>
+                  <option data-subtext="Breve Descrição">Aguardando Terceiro</option>
+                  <option data-subtext="Breve Descrição">Em Pausa</option>
+                  <option data-subtext="Breve Descrição">Cancelado</option>
+                  <option data-subtext="Breve Descrição">Concluído</option>
+                 
+              </select></div>
+            
+           
+    </div>
+  </div>
+
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Documentação <small>Serviços Solicitados</small></h2>
+      
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+
+      <table class="table table-striped" style="text-align: center">
+        <thead>
+          <tr>
+            <th  valign="center">Solicitado</th>
+            <th>Tipo de Serviço</th>
+            <th>Colaboradores Associados</th>
+            <th>Exigidos</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for tps in arr %}
+          <tr>
+            <th style="vertical-align: middle">Solicitado</th>
+            <td style="vertical-align: middle">{{tps}}</td>
+              
+            <td style="vertical-align: middle">
+                {% for rec in colab %}
+                        {% if rec.tps == tps %} 
+                        <a  href="/{{rec.id_col|encoder}}/documentosHse"> {{rec.colab}}</a>
+                              {% for el in func %}
+                                {% if rec.colab == el.nome_funcionario %}
+                                    {% if el.status == "AG" %}
+                                      <i class="fa fa-hourglass-1" style="font-size:18px; color: rgb(76, 0, 255)"></i>
+                                    {% elif el.status == "AP" %}
+                                      <i class="fa fa-thumbs-up" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+                                    {% elif el.status == "RP" %}
+                                      <i class="fa fa-thumbs-down" style="font-size:18px; color: red"></i>
+                                    {% endif %}
+                                {% endif %}
+                              {% endfor %}
+                        <br>
+                    {% endif %}
+              {% endfor %}
+            </td>
+              
+            
+            <td>
+              {% for doc,serv in dict.items %}
+                {% if serv == tps %}
+                   {{doc}}<br>
+                {% endif %}
+              {% endfor %}
+            </td>
+           </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+
+    </div>
+    
+
+  </div>
+  
+</div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6"><h2><small>Observações</small></h2>
+      <div class="alert alert-secondary" role="alert">
+          {{obj.descricao}}
+      </div></div>
+    <div class="col-md-6"><h2><small>Mensagens</small></h2>
+      <div class="alert alert-secondary" role="alert">
+
+
+          <table>
+            {% if msgs %}
+              {% for item in msgs %}
+              <tr>
+             
+                <th style="text-align: right"><small>{{item.ator}}<br>{{item.data|date:"D M Y"}}<br>{{item.data|time:"H : i"}}</small></th>
+                <th>&nbsp</th>
+                <th style="text-align: justify">{{item.msg}}</th>
+              </tr>
+              <tr></tr>
+              {% endfor %}
+            {% else %}
+                Nenhuma mensagem  foi gravada
+            {% endif %}
+            </table>
+
+      
+          
+      </div></div></div>
+  </div>
+  </div>
+<div class="container">
+<div class="row">
+  <div class="col-md-6"></div>
+  <div class="col-md-6" style="text-align: center">
+      <input class="btn btn-primary" type=button value="Voltar" onClick="javascript:history.go(-1);">
+
+      <a href="" data-toggle="modal" data-target="#Modal_hist"><button type="button" class="btn btn-primary">Histórico de Ações</button></a>
+
+    <a href="#Modal_msg" data-toggle="modal" data-target="#Modal_msg"><button type="button" class="btn btn-primary">Enviar Mensagem</button></a>
+    <button type="submit" class="btn btn-danger">Gravar Dados</button><br><br>
+
+  </div>
+</form>
+</div>
+</div>
+<div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <section class="main-timeline-section" style="text-align: center">
+            <div class="timeline-start"></div>
+            <div class="conference-center-line"></div>
+            <div class="conference-timeline-content">
+              <div class="timeline-article timeline-article-top">
+                  <div class="content-date">
+                      <span>   </span>
+                  </div>
+                  <div class="meta-date"></div>
+                  <div class="content-box">
+                   
+                    <p>INÍCIO ATIVIDADES<br>{{dw|date}}</p>
+                  </div>
+              </div>
+  
+              <div class="timeline-article timeline-article-bottom">
+                  <div class="content-date">
+                      <span></span>
+                  </div>
+                  <div class="meta-date"></div>
+                  <div class="content-box">
+                    <p>INTEGRAÇÃO ATÉ<br>{{minus4}}</p>
+                  </div>
+              </div>
+                 <div class="timeline-article timeline-article-top">
+                  <div class="content-daate">
+                      <span>&nbsp;&nbsp;&nbsp;{{rest}} dias</span>
+                  </div>
+                  <div class="meta-date"></div>
+                  <div class="content-boox">
+                    <p>ENVIO TODA DOCUMENTAÇÃO<br>{{minus6}}</p>
+                  </div>
+              </div>
+  
+              <div class="timeline-article timeline-article-bottom">
+                  <div class="content-date">
+                      <span></span>
+                  </div>
+                  <div class="meta-date"></div>
+                  <div class="content-box">
+                    <p>DATA ABERTURA<br>{{obj.data_abertura|date}}</p>
+                  </div>
+              </div> 
+             </div>
+             <div class="timeline-end"></div>
+          </section>
+      </div>
+    </div>
+  </div>
+
+
+
+<div class="container">
+
+
+
+
+
+            
+                  
+                    
+              
+                   
+          
+                
+                  </div>
+                </div>
+    </div>
+</div>
+</div>         
+</div>
+</div>
+
+
+        
+
+      
+<div class="modal" id="my_modal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Associar Colaborador(a) à Tarefa<br><p id="demo"></p></h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            
+        </div>
+        <div class="modal-body">
+          
+            <a id="YOUR_ID" href="#" ></a>
+          <form action="/{{obj.id}}/{{id}}/include_col" method="POST" class="post-form">  {% csrf_token %}          
+          <div class="form-group">
+            <input type="hidden" name="tps" value="">
+            <input type="hidden" name="colab" value="1">
+            <input type="hidden" name="id_col" value="1">
+            <input type="hidden" name="num_cham" value="{{obj.id}}">
+              {% for f in fun %}
+                <li data-toggle="tooltip" data-placement="left" title="Em alta tensão e eletricidade">
+              <input type="checkbox" name="colab[]" id="hobby2" value="{{f.nome_funcionario}},{{f.id}}" class="flat" /> {{f.nome_funcionario}}
+              <br /></li>
+              {% endfor %}
+       
+          
+          <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+</div>
+
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal" id="Modal_msg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Gravar envio de Mensagem<br><p id="demo"></p></h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            
+        </div>
+        <div class="modal-body">
+        
+          <form action="/{{obj.id}}/{{id}}/message_hse" method="POST" class="post-form">
+            {% csrf_token %}
+                                   <input type="hidden" name="num_cham" value="{{obj.id}}">
+                                   <input type="hidden" name="ator" value="1">
+                                   <input type="hidden" name="data" value="1">
+                                   <textarea rows="4" cols="50" name="msg">Sua Msg aqui...</textarea><br>
+                <button type="submit" class="save btn btn-primary">    Enviar    </button>
+             </form>
+            </div>          
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal" id="Modal_hist">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Histórico de Interação com Chamado {{obj.id}}<br><p id="demo"></p></h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              
+          </div>
+          <div class="modal-body">
+          
+              <div class="container">
+                  <div class="page-header">
+                    <h1 id="timeline"></h1>
+                  </div>
+                  <ul class="timeline">
+                    {% for el in log %}
+                    {% if forloop.counter|divisibleby:2 %}
+                    <li>
+                      <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+                      <div class="timeline-panel">
+                        <div class="timeline-heading">
+                          <h4 class="timeline-title">{{el.ator}}</h4>
+                          <p><small class="text-muted"><i class="fa fa-time"></i>{{el.data|date}}&nbspàs&nbsp{{el.data|time}}</small></p>
+                        </div>
+                        {% if el.tipo == "add_col" %}
+                        <strong>Colaborador Associado</strong>
+                        {% elif el.tipo == "msg" %}
+                        <strong>Mensagem</strong>
+                        {% endif %}
+                        <div class="timeline-body">
+                        
+                          <p>{{el.acao}}</p>
+                        </div>
+                      </div>
+                    </li>
+                    {% else %}
+                    <li class="timeline-inverted">
+                      <div class="timeline-badge warning"><i class="glyphicon glyphicon-credit-card"></i></div>
+                      <div class="timeline-panel">
+                        <div class="timeline-heading">
+                          <h4 class="timeline-title">{{el.ator}}</h4>
+                          <p><small class="text-muted"><i class="fa fa-time"></i>{{el.data|date}}&nbspàs&nbsp{{el.data|time}}</small></p>
+                        </div>
+                        {% if el.tipo == "add_col" %}
+                        <strong>Colaborador Associado</strong>
+                        {% elif el.tipo == "msg" %}
+                        <strong>Mensagem</strong>
+                        {% endif %}
+                        <div class="timeline-body">
+                          <p>{{el.acao}}</p>
+                         
+                        </div>
+                      </div>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    
+                  </ul>
+                </div>
+              </div>          
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+
+
+
+
+
+    <div class="modal" id="Modal_resp">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Responsáveis cadastrados para {% for nome in emp %}
+                {% if nome.id|trim == id|trim %}
+                {{nome.nome_empresa}}
+                {% endif %}
+                {% endfor %} <br>
+                <small>Neste chamado num. {{N_CHM}}, o Responsável é</small>  <p id="wwqq"></p></h4>
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                
+            </div>
+            <div class="modal-body">
+            
+             {% for nome in resp %}
+             <div class="card">
+    
+  
+                <div class="card-header" role="tab" id="headingOne">
+                    <a data-toggle="collapse" data-parent="#accordionEx" href="#{{nome.id}}" aria-expanded="false" aria-controls="{{nome.id}}">
+                        <h5 class="mb-0">
+                            Dados : {{nome.nome_resp}} <i class="fa fa-angle-down rotate-icon"></i>
+                        </h5>
+                    </a>
+                </div>
+        
+                <!-- Card body -->
+                <div id="{{nome.id}}" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordionEx">
+                    <div class="card-body">
+                        Informações detalhadas do Responsável: 
+                         <ul>{% for tg in resp %}
+                            {% if nome.id == tg.id %}
+                                    <li>Nome :{{tg.nome_resp}}</li>
+                                    <li>Função :{{tg.funcao_resp}}</li>
+                                    <li>Fone :{{tg.telefone_resp}}</li>
+                                    <li>Email :{{tg.email_resp}}</li>
+                                
+                            {% endif %}
+                        {% endfor %}</ul>
+                    </div>
+                </div>
+            </div>
+             {% endfor %}
+                </div>  
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>        
+              </div>
+            
+          </div>
+        </div>
+ 
+{% endblock %}

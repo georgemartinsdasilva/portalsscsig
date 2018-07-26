@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load define_action %}  
+{% block css %}{% endblock %}
+{% block T1 %}{{el.nome_empresa}} {% endblock %}
+{% block T2 %}Bem Vindo(a) ! {% endblock %}
+{% block script %}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+      <a href="cadastro_empresa"><div class="card mb-4 box-shadow">
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=1b446d&fg=eceeef&text=Dados Cadastrais" alt="Dados Cadastrais">
+        <div class="card-body">
+          <p class="card-text" style="text-align: justify">Mantenha atualizado seus dados cadastrais. Realize o upload das documentações pertinentes à empresa, informando a validade destes. </p>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">Running</small>
+          </div>
+        </div>
+      </div>
+    </div></a>
+    <div class="col-md-4">
+      <a href="colaboradores"><div class="card mb-4 box-shadow">
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=1b446d&fg=eceeef&text=Colaboradores" alt="Módulo Hse">
+        <div class="card-body">
+          <p class="card-text" style="text-align: justify">Cadastro de novos colaboradores. Gestão da documentação de todos os colaboradores da empresa. Informações básicas e complementares. </p>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">Running</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <a href="/None/{{el.id|encoder}}/show_my_cham"><div class="card mb-4 box-shadow">
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=1b446d&fg=eceeef&text=Chamados " alt="Módulo Hse">
+        <div class="card-body">
+          <p class="card-text" style="text-align: justify">Acompanhar chamados. Associação dos colaboradores aos serviços existentes nos chamados. Envio de mensagens para solicitante e Hse. </p>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">Running</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+        
+      
+
+{% endblock %}

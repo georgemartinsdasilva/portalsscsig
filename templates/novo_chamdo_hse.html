@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/hse">Hse</a></li>
+<li><a href="/meus_chamados">Chamados</a></li>
+<li>Novo Chamado</li>            
+{% endblock %}
+{% load staticfiles %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link href="{% static 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block T1 %}Novo chamado Hse{% endblock %}
+{% block T2 %}Abertura de um Novo Chamado{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-6">
+   
+
+
+   
+
+
+
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.empresa.label_tag }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Empresa Não Encontrada ? <a href="\solicita">Solicita Cadastro</a>
+        {{ form.empresa }} <br>
+      {{ form.nome_proj.label_tag }}
+      {{ form.nome_proj }}<br>
+      <p>Previsão Início das Atividades:</p>
+      <input type="text" name="tempo_estimado"/><br><br>
+      {{ form.tipo_servico.label_tag }}
+      {{ form.tipo_servico }}
+      {{ form.descricao.label_tag }}
+      {{ form.descricao }}
+      
+     <!-- <p>Previsão Fim das Atividades:</p>
+      <input type="text" name="tempo_fim"/>-->
+                  {% for item in dado %}
+                      {% if item.user == request.user.username %}       
+
+                             <input type="hidden" name="setor_solicitante" value="{{item.Setor}}">
+                             <input type="hidden" name="gestor_solicitante" value="{{item.Gestor}}">
+                             <input type="hidden" name="fone_solicitante" value="{{item.num_tel}}">
+                             <input type="hidden" name="status" value="andamento">
+                             
+                  {% endif %}
+                  {% endfor %}
+     <br> <br> <button type="submit" class="save btn btn-primary">Gravar Chamado</button><br><br>
+  </form>
+
+  </div>
+  {% if form.errors %}
+  <div class="col-md-6" style="text-align: center" id="div1" >
+      
+      <img src="{% static 'SIG_1.png' %}" width="150" height="100" alt="Book" id="book" >
+      <p style="color:red;">Algo saiu errado ! Por favor, tente novamente.</p>
+      
+      <span class="helptext">Todos os campos são OBRIGATÓRIOS, verifique.</span>
+      <span class="helptext"<ul><li>xx</li><li>xx</li><li>xx</li><li>xx</li></ul></span>
+    
+  
+      
+  </div>
+  {% else %}
+  <div class="col-md-6" style="text-align: center" id="div1" >
+      <br><br>
+      <img src="{% static 'SIG_1.png' %}" width="300 " height="200" alt="Book" id="book" >
+      
+  
+      
+  </div>
+  {% endif %}
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+  $('input[name="tempo_estimado"]').daterangepicker({
+    "singleDatePicker": true,
+    "locale": {
+        "format": "MM/DD/YYYY",
+        "separator": " - ",
+        "applyLabel": "Apply",
+        "cancelLabel": "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Dom",
+            "Seg",
+            "Ter",
+            "Qua",
+            "Qui",
+            "Sex",
+            "Sab"
+        ],
+        "monthNames": [
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro"
+        ],
+        "firstDay": 1
+    },
+
+}, function(start, end, label) {
+  console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+});
+    
+  </script>
+  <script>
+      $('input[name="tempo_fim"]').daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "MM/DD/YYYY",
+            "separator": " - ",
+            "applyLabel": "Apply",
+            "cancelLabel": "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel": "W",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sab"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abril",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro"
+            ],
+            "firstDay": 1
+        },
+    
+    }, function(start, end, label) {
+      console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+    });
+        
+      </script>
+{% endblock %}

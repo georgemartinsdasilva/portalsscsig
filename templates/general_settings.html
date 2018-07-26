@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/configurate">Configurações</a></li>
+<li><a href="/configurate_hse">Configurações Hse</a></li>
+<li>Configurações Gerais</li>           
+{% endblock %}
+{% load define_action %}
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block T1 %}Configurações{% endblock %}
+{% block T2 %}Crie, Aletere e Edite{% endblock %}
+{% block script %}{% endblock %}
+{% block content %}
+
+<div class="row">
+        <div class="col-md-4">
+          <h4>Dias para Integração</h4><br>
+            <form method="post" action="\dias_integracao_w">
+                {% csrf_token %}
+                <label for="id_Seg">Seg:</label><input type="checkbox" name="Seg" id="id_Seg" >
+                <label for="id_Ter">Ter:</label><input type="checkbox" name="Ter" id="id_Ter" >
+                <label for="id_Qua">Qua:</label><input type="checkbox" name="Qua" id="id_Qua" >
+                <label for="id_Qui">Qui:</label><input type="checkbox" name="Qui" id="id_Qui" >
+                <label for="id_Sex">Sex:</label><input type="checkbox" name="Sex" id="id_Sex" >
+                <label for="id_Sab">Sab:</label><input type="checkbox" name="Sab" id="id_Sab" >
+                <label for="id_Dom">Dom:</label><input type="checkbox" name="Dom" id="id_Dom" >  
+                <br><br>
+                <button type="submit" class="save btn btn-primary">Alterar Dias  </button>
+                </form>
+                <p class="lead text-muted">Dias Cadastrados </p>
+                <table class="table table-hover" style="text-align: center">
+                    <tr>
+                      <th>Seg</th>
+                      <th>Ter</th>
+                      <th>Qua</th>
+                      <th>Qui</th>
+                      <th>Sex</th>
+                      <th>Sab</th>
+                      <th>Dom</th>
+                     
+                    </tr>
+                    {% for elem in dias  %}
+        
+                    
+                             <tr>   
+
+                               <td>{% if elem.Seg == "Monday"%}
+                                  <i class="fa fa-check" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+                                {% else %}
+                                <i class="fa fa-close" style="font-size:18px; color: red"></i>
+                                {% endif %}
+                               </td>
+                               <td>{% if elem.Ter == "Tuesday"%}
+                                  <i class="fa fa-check" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+                                {% else %}
+                                <i class="fa fa-close" style="font-size:18px; color: red"></i>
+                                {% endif %}</td> 
+                               <td>{% if elem.Qua == "Wednesday"%}
+                                  <i class="fa fa-check" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+                                {% else %}
+                                <i class="fa fa-close" style="font-size:18px; color: red"></i>
+                                {% endif %}</td> 
+                               <td>{% if elem.Qui == "Thursday"%}
+                                  <i class="fa fa-check" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+                                {% else %}
+                                <i class="fa fa-close" style="font-size:18px; color: red"></i>
+                                {% endif %}</td>
+                               <td>{% if elem.Sex == "Friday"%}
+                                  <i class="fa fa-check" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+                                {% else %}
+                                <i class="fa fa-close" style="font-size:18px; color: red"></i>
+                                {% endif %}</td> 
+                               <td>{% if elem.Sab == "Saturday"%}
+                                  <i class="fa fa-check" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+                                {% else %}
+                                <i class="fa fa-close" style="font-size:18px; color: red"></i>
+                                {% endif %}</td> 
+                               <td>{% if elem.Dom == "Sunday"%}
+                                  <i class="fa fa-check" style="font-size:18px; color: rgb(3, 240, 55)"></i>
+                                {% else %}
+                                <i class="fa fa-close" style="font-size:18px; color: red"></i>
+                                {% endif %}</td>      
+                             </tr>
+         
+          
+         
+                    {% endfor %}
+                   </table>
+       
+  
+          
+        </div></a>
+        <div class="col-md-4">
+          asdasd
+        </div>
+        <div class="col-md-4">
+          asdasd
+        </div>
+      </div>
+  
+
+
+{% endblock %}
+

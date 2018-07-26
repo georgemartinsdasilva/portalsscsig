@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/hse">Hse</a></li>
+<li>Chamados</li>            
+{% endblock %}
+{% load define_action %}  
+{% block css %}{% endblock %}
+{% block T1 %}Abertura de novos chamados{% endblock %}
+{% block T2 %}Novo chamado - Lista dos meus chamados{% endblock %}
+{% block script %}
+
+
+{% endblock %}
+{% block content %}
+
+
+ 
+
+
+<div class="row">
+        <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <a href="/novo_chamado_hse">
+        <img class="card-img-top" data-src="holder.js/100px120?theme=thumb&bg=1b446d&fg=eceeef&text=Abrir Novo Chamado" alt="Módulo Hse">
+    </div></a>
+</div>  
+<br><br>
+
+
+
+<div class="container">  
+  
+    <div class="x_title"><h2>Meus Chamados <small></small></h2></div>
+      
+    
+    
+    <div class="x_content"></div>
+ <div class="col-md-12"> 
+        <table id="datatable" class="table table-striped table-bordered">                            
+                <thead>
+                  <tr>
+                    <th>Numero Chamado</th>
+                    <th>Empresa</th>
+                    <th>Solicitante</th>
+                    <th>Projeto/Serviço</th>
+                    <th>Início Atividades</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+{% for cham in mycham %}
+
+                <tbody>
+                 <tr>
+                     <td><a href="/show_cham_sol/{{cham.id|encoder}}">{{cham.id|stringformat:"05d"}}</td></a>
+                    <td>{% for nome in emp %}
+                      {% if nome.id == cham.empresa_id %}
+                      {{nome.nome_empresa}}
+                      {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td>{{cham.solicitante}}</td>
+                    <td>{{cham.nome_proj}}</td>
+                    <td>{{cham.tempo_estimado}}</td>
+                    <td>{{cham.status}}</td>
+                  </tr>
+                  {% endfor %}                          
+                </tbody>
+              </table>
+     
+     
+    </div>
+  </div> 
+
+
+  
+{% endblock %}
+

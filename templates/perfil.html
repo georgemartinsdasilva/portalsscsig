@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li>Perfil de Usuário</li>           
+{% endblock %}
+{% load staticfiles %}
+{% block css %}{% endblock %}
+{% block T1 %}Meu Perfil {% endblock %}
+{% block T2 %}Bem Vindo {{request.user|title}}<br> {% endblock %}
+{% block script %}{% endblock %}
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-6">
+  
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}  
+          <p><label for="user">Usuário:</label> <input class="form-control" type="text" name="user" maxlength="100" required="" id="user" readonly value="{{request.user.username}}"></p>
+         
+            <input type="hidden" name="status" value="False">
+            <p><label for="first_name">Primeiro Nome:</label> <input class="form-control" type="text" name="first_name" maxlength="100" required="" id="first_name" value="{{dado.first_name}}"></p>
+            <p><label for="last_name">Ultimo Nome:</label></p><input class="form-control" type="text" name="last_name" maxlength="20" required="" id="last_name" value="{{dado.last_name}}"></p>
+            <p><label for="Setor">Setor:</label> <input class="form-control" type="text" name="Setor" maxlength="20" required="" id="Setor" value="{{dado.Setor}}"></p>
+            <p><label for="Gestor">Gestor:</label> <input class="form-control" type="text" name="Gestor" maxlength="100" required="" id="Gestor" value="{{dado.Gestor}}"></p>
+            <p><label for="email">Email:</label> <input class="form-control" type="text" name="email" maxlength="100" required="" id="email" value="{{dado.email}}"></p>
+            
+            <input class="form-control" type="hidden" name="perm" maxlength="100" required="" id="perm" value="SIG"></p>
+            <p><label for="num_tel">Telefone:</label><input class="form-control" type="text" name="num_tel" maxlength="100" required="" id="num_tel" value="{{dado.num_tel}}"></p>
+            <p><label for="funcao">funcao:</label> <input class="form-control" type="text" name="funcao" maxlength="100" required="" id="funcao"  value="{{dado.funcao}}"></p>
+           <br><br>
+              
+            <button type="submit" class="btn btn-primary">Atualizar Perfil</button><BR><BR>
+                      </form>
+  
+    </div>
+    {% if form.errors %}
+<div class="col-md-6" style="text-align: center" id="div1" >
+    
+    <img src="{% static 'SIG_1.png' %}" width="150" height="100" alt="Book" id="book" >
+    <p style="color:red;">Algo saiu errado ! Por favor, tente novamente.</p>
+    
+    <span class="helptext">Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.</span>
+    <span class="helptext"<ul><li>Sua senha não pode ser tão parecida com suas outras informações pessoais.</li><li>Sua senha precisa conter pelo menos 8 caracteres.</li><li>Sua senha não pode ser uma senha habitualmente utilizada.</li><li>Sua senha não pode ser inteiramente numérica.</li></ul></span>
+    <span class="helptext">Certifique-se de que as senhas informadas são identicas.</span><br>
+    <span class="helptext">Certifique-se de que não há outro usuário com o mesmo nome.</span>
+
+    
+</div>
+{% else %}
+<div class="col-md-6" style="text-align: center" id="div1" >
+    <br><br>
+    <img src="{% static 'SIG_1.png' %}" width="300 " height="200" alt="Book" id="book" >
+    
+
+    
+</div>
+{% endif %}
+                                                                                                                             
+  </div>
+  
+  
+
+{% endblock %}

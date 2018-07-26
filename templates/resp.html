@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/hse">Hse</a></li>
+<li><a href="/portaria">Portaria</a></li>
+<li>Responsável</li>           
+{% endblock %}
+{% load expr %}
+{% load define_action %}
+{% block css %}{% endblock %}
+{% block T1 %}Responsáveis{% endblock %}
+{% block T2 %}Visualize dados para conferência{% endblock %}
+{% block script %}{% endblock %}
+{% block content %}
+<div class="row">
+    
+</div>
+<div class="row">
+    <div class="col-md-6">
+       
+                <h4 class="modal-title" id="myModalLabel">Responsável Empresa Terceira</h4><br>
+        
+                <p class="lead text-muted"><strong>Nome &nbsp: &nbsp &nbsp {{respo.nome_resp}}</strong></p>
+                
+
+            <p class="lead text-muted"><strong>Empresa &nbsp: &nbsp &nbsp
+                {% for nome in emp %}
+                {% if nome.id|trim == respo.empresa_resp|trim %}
+                {{nome.nome_empresa}}
+                {% endif %}
+                {% endfor %}
+                </strong></p>
+          <p class="lead text-muted"><strong>E-mail&nbsp&nbsp&nbsp&nbsp: &nbsp &nbsp{{respo.email_resp}}</strong></p>
+          <p class="lead text-muted"><strong>Fone&nbsp&nbsp&nbsp&nbsp: &nbsp &nbsp{{respo.telefone_resp}}</strong></p>
+          <p class="lead text-muted"><strong>Função &nbsp: &nbsp &nbsp{{respo.funcao_resp}}</strong></p>
+
+        </div>
+
+        <div class="col-md-12">
+                <input class="btn btn-primary" type=button value="VOLTAR" onClick="javascript:history.go(-1);">
+            </div>
+    </div>
+  
+    <!--/.Accordion wrapper-->
+            
+            </div>
+
+    </div>
+</div>
+           
+{% endblock %}
